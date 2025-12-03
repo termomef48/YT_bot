@@ -24,3 +24,22 @@ def handle_message(message):
         bot.send_message(message.chat.id, "✅ Готово!")
     else:
         bot.send_message(message.chat.id, "❌ Помилка при завантаженні.")
+
+def download_video(url):
+    ydl_opts = {
+        'format': 'best',
+        'outtmpl': '%(title)s.%(ext)s'
+    }
+
+    try:
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=True)
+            file_path = ydl.prepare_filename(info)
+            return file_path
+
+    except Exception as e:
+        print("Помилка:", e)
+        return None
+
+
+bot.polling()
